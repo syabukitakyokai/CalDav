@@ -106,6 +106,60 @@ namespace CalDav.Client {
 
             GetObject(e.UID);
 		}
+
+        public void Delete(Event e)
+        {
+#if DEBUG
+            //if (string.IsNullOrEmpty(e.UID)) throw new ArgumentNullException("UID");
+
+            //var result = Common.Request(new Uri(Url, e.UID + ".ics"), "DELETE", (req, str) =>
+            //{
+            //    req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
+            //    req.ContentType = "text/calendar";
+            //    var calendar = new CalDav.Calendar();
+            //    e.Sequence = (e.Sequence ?? 0) + 1;
+            //    Common.Serialize(str, calendar);
+
+            //}, Credentials);
+#endif
+
+            if (string.IsNullOrEmpty(e.UID)) throw new ArgumentNullException("UID");
+
+            var headers = new Dictionary<string, string>();
+
+            var calendar = new CalDav.Calendar();
+            e.Sequence = (e.Sequence ?? 0) + 1;
+            string content;
+            using (var ms = new MemoryStream())
+            {
+                Common.Serialize(ms, calendar);
+                var arr = ms.ToArray();
+                content = System.Text.Encoding.UTF8.GetString(arr, 0, arr.Length);
+            }
+
+
+            var result = common.Request(new Uri(Url, e.UID + ".ics"), "DELETE", "text/calendar", content, Credentials, headers);
+            // (req, str) => {
+            //if (!update)
+            //{
+            //req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
+            //}
+            //req.ContentType = "text/calendar";
+            //	var calendar = new CalDav.Calendar();
+            //		e.Sequence = (e.Sequence ?? 0) + 1;
+            //			calendar.Events.Add(e);
+            //				Common.Serialize(str, calendar);
+
+            //}, Credentials);
+
+            if (result.HttpStatusCode != System.Net.HttpStatusCode.Created && result.HttpStatusCode != HttpStatusCode.NoContent)
+                throw new Exception("Unable to delete event: " + result.HttpStatusCode);
+            //e.Url = new Uri(Url, result.Item3[System.Net.HttpRequestHeader.Location]);
+            e.Url = new Uri(Url, result.ResponseHeaders["Location"]);
+
+            GetObject(e.UID);
+        }
+
         public void Save(ToDo e)
         {
             bool update = !string.IsNullOrEmpty(e.UID);
