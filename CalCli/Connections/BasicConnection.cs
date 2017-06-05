@@ -23,10 +23,11 @@ namespace CalCli
             {
                 //req.Credentials = credentials;
                 var b64 = username + ":" + password;
-                b64 = System.Convert.ToBase64String(System.Text.Encoding.Default.GetBytes(b64));
+                b64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(b64));
                 request.Headers[HttpRequestHeader.Authorization] = "Basic " + b64;
             }
-            ((HttpWebRequest)request).UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
+
+            // ((HttpWebRequest)request).UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
             return request;
         }
 

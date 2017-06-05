@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CalCli;
-using OutlookClient;
 using CalCli.API;
 using System.IO;
 using CalCli.Connections;
-using CalCli.UI;
+//using CalCli.UI;
 
 namespace CalCli.Util
 {
@@ -17,64 +16,50 @@ namespace CalCli.Util
         private static IConnection refreshGoogleToken()
         {
             IConnection connection;
-            GoogleOAuthForm form = new GoogleOAuthForm();
-            form.ShowDialog();
-            connection = new GoogleConnection(form.Result.Token);
-            StreamWriter sw = new StreamWriter("token");
-            sw.WriteLine(form.Result.Token);
-            sw.Close();
-            return connection;
+            //GoogleOAuthForm form = new GoogleOAuthForm();
+            //form.ShowDialog();
+            //connection = new GoogleConnection(form.Result.Token);
+            //StreamWriter sw = new StreamWriter("token");
+            //sw.WriteLine(form.Result.Token);
+            //sw.Close();
+            return null;
         }
-        public static IServer GetCalendarServer(CalendarTypes calendarTypes, string username = null, string password = null)
+        public static IServer GetCalendarServer(CalendarTypes calendarTypes, string username = null, string password = null, string token = null)
         {
             IServer server;
-            if(calendarTypes == CalendarTypes.Outlook)
+            IConnection connection;
+
+            if (calendarTypes == CalendarTypes.Google)
             {
-                return new OutlookServer();
+                connection = new GoogleConnection(token);
+                server = null;
             }
             else
             {
-                IConnection connection;
-                if (calendarTypes == CalendarTypes.Google)
+                connection = new BasicConnection(username , password);
+                server = null;
+            }
+
+            if (server == null)
+            {
+                try
                 {
-                    if (File.Exists("token"))
-                    {
-                        StreamReader sr = new StreamReader("token");
-                        connection = new GoogleConnection(sr.ReadLine());
-                        sr.Close();
-                    }
-                    else
+                    server = new CalDav.Client.Server(urlFromCalendarType(calendarTypes), connection, username, password);
+
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message == "Authentication is required" && connection.GetType().Equals(new GoogleConnection("").GetType()))
                     {
                         connection = refreshGoogleToken();
-                    }
-                    server = null;
-                }
-                else
-                {
-                    connection = new BasicConnection(username , password);
-                    server = null;
-                }
-                if (server == null)
-                {
-                    try
-                    {
                         server = new CalDav.Client.Server(urlFromCalendarType(calendarTypes), connection, username, password);
 
                     }
-                    catch (Exception ex)
-                    {
-                        if (ex.Message == "Authentication is required" && connection.GetType().Equals(new GoogleConnection("").GetType()))
-                        {
-                            connection = refreshGoogleToken();
-                            server = new CalDav.Client.Server(urlFromCalendarType(calendarTypes), connection, username, password);
-
-                        }
-                        else
-                            throw ex;
-                    }
+                    else
+                        throw ex;
                 }
-                return server;
             }
+            return server;
         }
 
         private static string urlFromCalendarType(CalendarTypes calendarTypes)

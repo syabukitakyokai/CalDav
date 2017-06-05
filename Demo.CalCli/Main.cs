@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using CalCli.UI;
+//using CalCli.UI;
 using CalCli.Connections;
 using System.IO;
 using CalCli.API;
@@ -92,12 +92,12 @@ namespace Demo.CalCli
 
         private void refreshGoogleToken()
         {
-            GoogleOAuthForm form = new GoogleOAuthForm();
-            form.ShowDialog();
-            connection = new GoogleConnection(form.Result.Token);
-            StreamWriter sw = new StreamWriter("token");
-            sw.WriteLine(form.Result.Token);
-            sw.Close();
+            //GoogleOAuthForm form = new GoogleOAuthForm();
+            //form.ShowDialog();
+            //connection = new GoogleConnection(form.Result.Token);
+            //StreamWriter sw = new StreamWriter("token");
+            //sw.WriteLine(form.Result.Token);
+            //sw.Close();
         }
 
         private void createEventButton_Click(object sender, EventArgs e)

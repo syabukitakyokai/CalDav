@@ -14,7 +14,7 @@ namespace CalCli.Connections
 
         public WebRequest Authorize(WebRequest request)
         {
-            request.Headers.Add(HttpRequestHeader.Authorization, "Bearer "+token);
+            request.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
             return request;
         }
     }
