@@ -38,15 +38,16 @@ namespace CalDav.Client {
 			req.Method = method.ToUpper();
 
 			//Dear .NET, please don't try to do things for me.  kthxbai
-			System.Net.ServicePointManager.Expect100Continue = false;
+			// System.Net.ServicePointManager.Expect100Continue = false;
 
 			if (headers != null)
 				foreach (var header in headers) {
 					var value = Convert.ToString(header.Value);
-					if (header.Key.Is("User-Agent"))
-						req.UserAgent = value;
-					else req.Headers[header.Key] = value;
-				}
+                    //if (header.Key.Is("User-Agent"))
+                    //	req.UserAgent = value;
+                    //else req.Headers[header.Key] = value;
+                    req.Headers[header.Key] = value;
+                }
 
             //if (credentials != null) {
             //	//req.Credentials = credentials;
@@ -55,8 +56,13 @@ namespace CalDav.Client {
             //	req.Headers[HttpRequestHeader.Authorization] = "Basic " + b64;
             //}
             connection.Authorize(req);
-			using (var stream = req.GetRequestStream()) {
-				if (content != null) {
+
+            var reqAsyncResult = req.BeginGetRequestStream(null, null);
+            using (var stream = req.EndGetRequestStream(reqAsyncResult))
+            //using (var stream = req.BeginGetRequestStream())
+            {
+                //using (var stream = req.GetRequestStream()) {
+                if (content != null) {
 					content(req, stream);
 				}
 
@@ -70,7 +76,9 @@ namespace CalDav.Client {
 
 		private System.Net.HttpWebResponse GetResponse(System.Net.HttpWebRequest req) {
 			try {
-				return (System.Net.HttpWebResponse)req.GetResponse();
+                var responseAsyncResult = req.BeginGetResponse(null, null);
+                var returnValue = req.EndGetResponse(responseAsyncResult);
+				return (System.Net.HttpWebResponse)returnValue;
 			} catch (System.Net.WebException wex) {
 				return (System.Net.HttpWebResponse)wex.Response;
 			}
