@@ -28,7 +28,7 @@ namespace CalDav {
 			return string.Equals(input ?? string.Empty, other ?? string.Empty, StringComparison.OrdinalIgnoreCase);
 		}
 
-		private static Regex rxDate = new Regex(@"(\d{4})(\d{2})(\d{2})T?(\d{2}?)(\d{2}?)(\d{2}?)(Z?)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static Regex rxDate = new Regex(@"(\d{4})(\d{2})(\d{2})T?(\d{2}?)(\d{2}?)(\d{2}?)(Z?)", RegexOptions.IgnoreCase);
 		public static DateTime? ToDateTime(this string value, Calendar calendar, string TimeZoneID) {
 			var date = ToDateTime(value);
 			if (date == null) return null;
@@ -38,7 +38,7 @@ namespace CalDav {
 			throw new NotImplementedException();
 		}
 
-		public static T? ToEnum<T>(this string input) where T : struct, IConvertible {
+		public static T? ToEnum<T>(this string input) where T : struct {
 			if (string.IsNullOrEmpty(input)) return null;
 			T ret;
 			if (System.Enum.TryParse<T>(input.Replace("-", "_"), true, out ret))
@@ -66,7 +66,7 @@ namespace CalDav {
 			return (DateTime?)null;
 		}
 
-		private static Regex rxOffset = new Regex(@"((\+|\-)?)(\d{1,2})\:?(\d{2})?", RegexOptions.Compiled);
+		private static Regex rxOffset = new Regex(@"((\+|\-)?)(\d{1,2})\:?(\d{2})?");
 		public static TimeSpan? ToOffset(this string input) {
 			if (string.IsNullOrEmpty(input)) return null;
 			var match = rxOffset.Match(input);
@@ -221,7 +221,7 @@ namespace CalDav {
 
 		internal static string ParamEncode(string value) {
 			if (value == null) return null;
-			if (value.Contains('=') || value.Contains(';'))
+			if (value.Contains("=") || value.Contains(";"))
 				return '"' + value.Replace("=", "=3D") + '"';
 			return value;
 		}

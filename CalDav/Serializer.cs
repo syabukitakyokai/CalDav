@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace CalDav {
 	public class Serializer {
@@ -14,22 +15,26 @@ namespace CalDav {
 
 		public System.Text.Encoding Encoding { get; set; }
 
-		public virtual T GetService<T>() {
-			if (DependencyResolver == null) {
-				DependencyResolver = type => {
+		public virtual T GetService<T>()
+        {
+			if (DependencyResolver == null)
+            {
+				DependencyResolver = type => 
+                {
 					type = _Cache.GetOrAdd(type, t =>
-							 typeof(Serializer).Assembly.GetTypes().FirstOrDefault(x => x.IsClass && !x.IsAbstract && x.IsAssignableFrom(type))
-						);
+                             // typeof(Serializer).Assembly.GetTypes().FirstOrDefault(x => x.IsClass && !x.IsAbstract && x.IsAssignableFrom(type))
+                             typeof(Serializer).GetTypeInfo().Assembly.DefinedTypes.FirstOrDefault(x => x.IsClass && !x.IsAbstract && x.IsAssignableFrom(type.GetTypeInfo())).AsType()
+                        );
 					return Activator.CreateInstance(type);
 				};
 			}
 			return (T)DependencyResolver(typeof(T));
 		}
 
-		public T Deserialize<T>(string filename, System.Text.Encoding encoding = null) where T : ISerializeToICAL {
-			using (var file = new System.IO.FileStream(filename, FileMode.Open))
-				return Deserialize<T>(file, encoding);
-		}
+		//public T Deserialize<T>(string filename, System.Text.Encoding encoding = null) where T : ISerializeToICAL {
+		//	using (var file = new System.IO.FileStream(filename, FileMode.Open))
+		//		return Deserialize<T>(file, encoding);
+		//}
 
 		public T Deserialize<T>(Stream stream, System.Text.Encoding encoding = null) where T : ISerializeToICAL {
 			using (var rdr = new StreamReader(stream, encoding ?? Encoding))
@@ -42,10 +47,10 @@ namespace CalDav {
 			return obj;
 		}
 
-		public void Serialize<T>(string filename, T obj, System.Text.Encoding encoding = null) where T : ISerializeToICAL {
-			using (var file = new System.IO.FileStream(filename, FileMode.Create))
-				Serialize(file, obj, encoding);
-		}
+		//public void Serialize<T>(string filename, T obj, System.Text.Encoding encoding = null) where T : ISerializeToICAL {
+		//	using (var file = new System.IO.FileStream(filename, FileMode.Create))
+		//		Serialize(file, obj, encoding);
+		//}
 
 		public void Serialize<T>(Stream stream, T obj, System.Text.Encoding encoding = null) where T : ISerializeToICAL {
 			if (obj == null) return;
