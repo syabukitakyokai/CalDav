@@ -40,6 +40,8 @@
             this.eventGroupBox = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.connectionGroupBox = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.calidLabel = new System.Windows.Forms.Label();
             this.pswdLabel = new System.Windows.Forms.Label();
@@ -51,8 +53,6 @@
             this.checkList = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.eventGroupBox.SuspendLayout();
             this.connectionGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -184,6 +184,30 @@
             this.connectionGroupBox.TabStop = false;
             this.connectionGroupBox.Text = "Connection";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(448, 134);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(102, 23);
+            this.button3.TabIndex = 24;
+            this.button3.Text = "Auto Config";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Google",
+            "iCloud",
+            "Yahoo",
+            "Outlook"});
+            this.comboBox2.Location = new System.Drawing.Point(367, 135);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(82, 21);
+            this.comboBox2.TabIndex = 23;
+            this.comboBox2.Text = "Google";
+            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -216,7 +240,7 @@
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(486, 20);
             this.passwordTextBox.TabIndex = 16;
-            this.passwordTextBox.Text = "Aliasgarikh20";
+            this.passwordTextBox.Text = "wicw-asgg-zakj-uljz";
             this.passwordTextBox.UseSystemPasswordChar = true;
             // 
             // usernameLabel
@@ -234,7 +258,7 @@
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(486, 20);
             this.usernameTextBox.TabIndex = 14;
-            this.usernameTextBox.Text = "aliasgarikh@icloud.com";
+            this.usernameTextBox.Text = "jeroen.bernsen@gmail.com";
             this.usernameTextBox.TextChanged += new System.EventHandler(this.usernameTextBox_TextChanged);
             // 
             // label1
@@ -288,30 +312,6 @@
             this.button2.Text = "Update";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "Google",
-            "iCloud",
-            "Yahoo",
-            "Outlook"});
-            this.comboBox2.Location = new System.Drawing.Point(367, 135);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(82, 21);
-            this.comboBox2.TabIndex = 23;
-            this.comboBox2.Text = "Google";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(448, 134);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(102, 23);
-            this.button3.TabIndex = 24;
-            this.button3.Text = "Auto Config";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // Main
             // 

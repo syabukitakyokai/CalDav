@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2C258FAE-97ED-4916-B5A3-4723700D675D}</ProjectGuid>
+    <ProjectGuid>{67F9D3A8-F71E-4428-913F-C37AE82CDB24}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CalCli.API</RootNamespace>
-    <AssemblyName>CalCli.API</AssemblyName>
+    <RootNamespace>CalCli2.API</RootNamespace>
+    <AssemblyName>CalCli2.API</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -35,17 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AlarmActions.cs" />
-    <Compile Include="IAlarm.cs" />
-    <Compile Include="ICalendar.cs" />
-    <Compile Include="IConnection.cs" />
-    <Compile Include="IEvent.cs" />
-    <Compile Include="IServer.cs" />
-    <Compile Include="IToDo.cs" />
-    <Compile Include="ITrigger.cs" />
+    <Compile Include="CalCli2.API.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Relateds.cs" />
-    <Compile Include="Statuses.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
