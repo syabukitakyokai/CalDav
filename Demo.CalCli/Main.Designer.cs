@@ -53,6 +53,7 @@
             this.checkList = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.eventGroupBox.SuspendLayout();
             this.connectionGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -166,6 +167,7 @@
             // 
             // connectionGroupBox
             // 
+            this.connectionGroupBox.Controls.Add(this.button4);
             this.connectionGroupBox.Controls.Add(this.button3);
             this.connectionGroupBox.Controls.Add(this.comboBox2);
             this.connectionGroupBox.Controls.Add(this.comboBox1);
@@ -313,6 +315,16 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(189, 133);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 25;
+            this.button4.Text = "List";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,6 +372,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button4;
     }
 }
 

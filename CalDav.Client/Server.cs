@@ -39,7 +39,7 @@ namespace CalDav.Client {
                             )
 
                         )
-                ), Credentials, new System.Collections.Generic.Dictionary<string, object> { { "Depth", 0 } });
+                ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "0" } });
             
             var xdoc = XDocument.Parse(result.Item2);
             Uri userprincipal = Url;
@@ -62,7 +62,7 @@ namespace CalDav.Client {
                             )
 
                         )
-                ), Credentials, new System.Collections.Generic.Dictionary<string, object> { { "Depth", 0 } });
+                ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "0" } });
             
             xdoc = XDocument.Parse(result.Item2);
             var hrefs = xdoc.Descendants(xcollectionset).SelectMany(x => x.Descendants(CalDav.Common.xDav.GetName("href")));
@@ -95,10 +95,12 @@ namespace CalDav.Client {
 
         private HashSet<string> GetOptions() {
 			var result = Common.Request(Url, "options", credentials: Credentials);
-			if (result.Item3["WWW-Authenticate"] != null)
+			if (result.Item3.ContainsKey("WWW-Authenticate"))
 				throw new Exception("Authentication is required");
-			var dav = result.Item3["DAV"];
-			if (dav == null || !dav.Contains("calendar-access"))
+            if (!result.Item3.ContainsKey("DAV"))
+                throw new Exception("This does not appear to be a valid CalDav server");
+            var dav = result.Item3["DAV"];
+			if (!dav.Contains("calendar-access"))
 				throw new Exception("This does not appear to be a valid CalDav server");
 			return new HashSet<string>((result.Item3["Allow"] ?? string.Empty).ToUpper().Split(',').Select(x => x.Trim()).Distinct(), StringComparer.OrdinalIgnoreCase);
 		}
@@ -120,7 +122,7 @@ namespace CalDav.Client {
                             )
 
                         )
-                ), Credentials, new System.Collections.Generic.Dictionary<string, object> { { "Depth", 1 } });
+                ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "1" } });
             
             if (string.IsNullOrEmpty(result.Item2))
 				return new[]{
@@ -136,7 +138,7 @@ namespace CalDav.Client {
                 if(response.Descendants(CalDav.Common.xCalDav.GetName("calendar")).Count() > 0)
                 {
                     string href = response.Descendants(CalDav.Common.xDav.GetName("href")).First().Value;
-                    calendars.Add(new Calendar(Common, new Uri(Url, href)) { Credentials = Credentials });
+                    calendars.Add(new Calendar(Common, new Uri(Url, href), Credentials));
                 }
             }
             return calendars.ToArray();

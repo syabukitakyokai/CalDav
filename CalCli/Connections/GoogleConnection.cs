@@ -12,9 +12,9 @@ namespace CalCli.Connections
             this.token = token;
         }
 
-        public WebRequest Authorize(WebRequest request)
+        public IXHttpWebRequest Authorize(IXHttpWebRequest request)
         {
-            request.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
+            request.Authorization = "Bearer " + token;
             return request;
         }
     }

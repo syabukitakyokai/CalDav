@@ -8,6 +8,7 @@ using CalCli;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Collections.Generic;
 using CalCli.Util;
+using CalDav;
 
 namespace Demo.CalCli
 {
@@ -231,6 +232,17 @@ namespace Demo.CalCli
             if (text == "Outlook")
                 return CalendarTypes.Outlook;
             return CalendarTypes.Google;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var iCalendar = calendars[comboBox1.SelectedIndex];
+            var calendar = iCalendar as CalDav.Client.Calendar;
+            var all = calendar.GetAll();
+
+            var q = CalendarQuery.SearchEvents(new DateTime(2000,1,1), new DateTime(2099,1,1));
+            var result = calendar.Search(q);
+
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 using CalCli.API;
+using System.IO;
 
 namespace CalDav.Client {
 	public class Calendar : ICalendar {
@@ -18,18 +19,19 @@ namespace CalDav.Client {
             this.common = common;
         }
 
-        public Calendar(Common common, Uri Url)
+        public Calendar(Common common, Uri Url, NetworkCredential credentials)
         {
             this.Url = Url;
             this.common = common;
+            this.Credentials = credentials;
             Initialize();
         }
         
 
         public void Initialize() {
 			var result = common.Request(Url, "PROPFIND", CalDav.Common.xDav.Element("propfind",
-				CalDav.Common.xDav.Element("allprop")), Credentials, new Dictionary<string, object> {
-					{ "Depth", 0 }
+				CalDav.Common.xDav.Element("allprop")), Credentials, new Dictionary<string, string> {
+					{ "Depth", "0" }
 				});
 			var xdoc = XDocument.Parse(result.Item2);
 			var desc = xdoc.Descendants(CalDav.Common.xCalDav.GetName("calendar-description")).FirstOrDefault();
@@ -46,8 +48,8 @@ namespace CalDav.Client {
 		}
 
 		public CalendarCollection Search(CalDav.CalendarQuery query) {
-			var result = common.Request(Url, "REPORT", (XElement)query, Credentials, new Dictionary<string, object> {
-				{ "Depth", 1 }
+			var result = common.Request(Url, "REPORT", (XElement)query, Credentials, new Dictionary<string, string> {
+				{ "Depth", "1" }
 			});
 			var xdoc = XDocument.Parse(result.Item2);
 			var data = xdoc.Descendants(CalDav.Common.xCalDav.GetName("calendar-data"));
@@ -65,18 +67,38 @@ namespace CalDav.Client {
             if (string.IsNullOrEmpty(e.UID)) e.UID = Guid.NewGuid().ToString();
 			e.LastModified = DateTime.UtcNow;
 
-			var result = common.Request(new Uri(Url,e.UID + ".ics"), "PUT", (req, str) => {
-                if (!update)
-                {
-                    req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
-                }
-                req.ContentType = "text/calendar";
-				var calendar = new CalDav.Calendar();
-				e.Sequence = (e.Sequence ?? 0) + 1;
-				calendar.Events.Add(e);
-				Common.Serialize(str, calendar);
+            var headers = new Dictionary<string, string>();
+            if (!update)
+            {
+                headers["If-None-Match"] = "*";
+            }
 
-			}, Credentials);
+            var calendar = new CalDav.Calendar();
+            e.Sequence = (e.Sequence ?? 0) + 1;
+            calendar.Events.Add(e);
+            string content;
+            using (var ms = new MemoryStream())
+            {
+                Common.Serialize(ms, calendar);
+                var arr = ms.ToArray();
+                content = System.Text.Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
+            }
+
+
+            var result = common.Request(new Uri(Url, e.UID + ".ics"), "PUT", "text/calendar", content, Credentials, headers);
+                // (req, str) => {
+                //if (!update)
+                //{
+                    //req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
+                //}
+                //req.ContentType = "text/calendar";
+			//	var calendar = new CalDav.Calendar();
+		//		e.Sequence = (e.Sequence ?? 0) + 1;
+	//			calendar.Events.Add(e);
+//				Common.Serialize(str, calendar);
+
+			//}, Credentials);
+
 			if (result.Item1 != System.Net.HttpStatusCode.Created && result.Item1 != HttpStatusCode.NoContent)
 				throw new Exception("Unable to save event: " + result.Item1);
             //e.Url = new Uri(Url, result.Item3[System.Net.HttpRequestHeader.Location]);
@@ -91,18 +113,46 @@ namespace CalDav.Client {
             if (string.IsNullOrEmpty(e.UID)) e.UID = Guid.NewGuid().ToString();
             e.LastModified = DateTime.UtcNow;
 
-            var result = common.Request(new Uri(Url, e.UID + ".ics"), "PUT", (req, str) => {
-                if (!update)
-                {
-                    req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
-                }
-                req.ContentType = "text/calendar";
-                var calendar = new CalDav.Calendar();
-                e.Sequence = (e.Sequence ?? 0) + 1;
-                calendar.ToDos.Add(e);
-                Common.Serialize(str, calendar);
+            //                if (!update)
+            //{
+            //  req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
+            //}
+            //req.ContentType = "text/calendar";
+            //var calendar = new CalDav.Calendar();
+            //e.Sequence = (e.Sequence ?? 0) + 1;
+            //calendar.ToDos.Add(e);
+            //Common.Serialize(str, calendar);
+            //
+            //          }, Credentials);
 
-            }, Credentials);
+            var headers = new Dictionary<string, string>();
+            if (!update)
+            {
+                headers["If-None-Match"] = "*";
+            }
+
+            var calendar = new CalDav.Calendar();
+            e.Sequence = (e.Sequence ?? 0) + 1;
+            calendar.ToDos.Add(e);
+            string content;
+            using (var ms = new MemoryStream())
+            {
+                Common.Serialize(ms, calendar);
+                var arr = ms.ToArray();
+                content = System.Text.Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
+            }
+
+            var result = common.Request(new Uri(Url, e.UID + ".ics"), "PUT", "text/calendar", content, Credentials, headers);
+                //(req, str) => {
+                //                if (!update)
+                //{
+                //  req.Headers[System.Net.HttpRequestHeader.IfNoneMatch] = "*";
+                //}
+                //req.ContentType = "text/calendar";
+                //Common.Serialize(str, calendar);
+                //
+                //          }, Credentials);
+
             if (result.Item1 != System.Net.HttpStatusCode.Created && result.Item1 != HttpStatusCode.NoContent)
                 throw new Exception("Unable to save event: " + result.Item1);
             // e.Url = new Uri(Url, result.Item3[System.Net.HttpResponseHeader.Location]);
@@ -115,7 +165,7 @@ namespace CalDav.Client {
 				CalDav.Common.xDav.Element("getetag"),
 				CalDav.Common.xCalDav.Element("calendar-data")
 				)
-			), Credentials, new Dictionary<string, object> { { "Depth", 1 } });
+			), Credentials, new Dictionary<string, string> { { "Depth", "1" } });
 
 
 
@@ -130,7 +180,7 @@ namespace CalDav.Client {
 					CalDav.Common.xCalDav.Element("calendar-data")
 					),
 				CalDav.Common.xDav.Element("href", new Uri(Url, uid + ".ics"))
-				), Credentials, new Dictionary<string, object> { { "Depth", 1 } });
+				), Credentials, new Dictionary<string, string> { { "Depth", "1" } });
 
 
 			return null;

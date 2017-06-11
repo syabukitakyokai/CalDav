@@ -6,7 +6,7 @@ namespace CalCli.Connections
 {
     public class OutlookConnection : IConnection
     {
-        public WebRequest Authorize(WebRequest request)
+        public IXHttpWebRequest Authorize(IXHttpWebRequest request)
         {
             return request;
         }
