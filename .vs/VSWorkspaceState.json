@@ -1,11 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\CalCli.API",
     "\\CalCli2.API",
     "\\Console",
     "\\Demo.CalCli"
   ],
-  "SelectedNode": "\\Demo.CalCli\\Main.cs",
   "PreviewInSolutionExplorer": false
 }
