@@ -33,7 +33,7 @@ namespace CalDav.Client {
 				CalDav.Common.xDav.Element("allprop")), Credentials, new Dictionary<string, string> {
 					{ "Depth", "0" }
 				});
-			var xdoc = XDocument.Parse(result.Item2);
+			var xdoc = XDocument.Parse(result.ResponseContent);
 			var desc = xdoc.Descendants(CalDav.Common.xCalDav.GetName("calendar-description")).FirstOrDefault();
 			var name = xdoc.Descendants(CalDav.Common.xDav.GetName("displayname")).FirstOrDefault();
 			if (name != null) Name = name.Value;
@@ -51,7 +51,7 @@ namespace CalDav.Client {
 			var result = common.Request(Url, "REPORT", (XElement)query, Credentials, new Dictionary<string, string> {
 				{ "Depth", "1" }
 			});
-			var xdoc = XDocument.Parse(result.Item2);
+			var xdoc = XDocument.Parse(result.ResponseContent);
 			var data = xdoc.Descendants(CalDav.Common.xCalDav.GetName("calendar-data"));
 			var serializer = new Serializer();
 			return new CalendarCollection(data.SelectMany(x => {
@@ -99,10 +99,10 @@ namespace CalDav.Client {
 
 			//}, Credentials);
 
-			if (result.Item1 != System.Net.HttpStatusCode.Created && result.Item1 != HttpStatusCode.NoContent)
-				throw new Exception("Unable to save event: " + result.Item1);
+			if (result.HttpStatusCode != System.Net.HttpStatusCode.Created && result.HttpStatusCode != HttpStatusCode.NoContent)
+				throw new Exception("Unable to save event: " + result.HttpStatusCode);
             //e.Url = new Uri(Url, result.Item3[System.Net.HttpRequestHeader.Location]);
-            e.Url = new Uri(Url, result.Item3["Location"]);
+            e.Url = new Uri(Url, result.ResponseHeaders["Location"]);
 
             GetObject(e.UID);
 		}
@@ -153,8 +153,8 @@ namespace CalDav.Client {
                 //
                 //          }, Credentials);
 
-            if (result.Item1 != System.Net.HttpStatusCode.Created && result.Item1 != HttpStatusCode.NoContent)
-                throw new Exception("Unable to save event: " + result.Item1);
+            if (result.HttpStatusCode != System.Net.HttpStatusCode.Created && result.HttpStatusCode != HttpStatusCode.NoContent)
+                throw new Exception("Unable to save event: " + result.HttpStatusCode);
             // e.Url = new Uri(Url, result.Item3[System.Net.HttpResponseHeader.Location]);
 
             GetObject(e.UID);

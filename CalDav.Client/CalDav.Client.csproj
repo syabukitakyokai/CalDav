@@ -40,6 +40,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="XHttpWebRequest.cs" />
+    <Compile Include="XHttpWebResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CalCli.API\CalCli.API.csproj">

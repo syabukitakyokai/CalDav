@@ -17,7 +17,7 @@ namespace CalDav.Client
 
         public NetworkCredential Credentials { get; set; }
 
-        public Tuple<System.Net.HttpStatusCode, string, ResponseHeaders> Request(Uri url, string method, string contentType, string requestContent)
+        public XHttpWebResponse Request(Uri url, string method, string contentType, string requestContent)
         {
             var httpClientHandler = new HttpClientHandler()
             {
@@ -77,7 +77,7 @@ namespace CalDav.Client
                 }
 
 
-                var result = new Tuple<HttpStatusCode, string, ResponseHeaders>(
+                var result = new XHttpWebResponse(
                     response.StatusCode,
                     responseContent,
                     responseHeaders

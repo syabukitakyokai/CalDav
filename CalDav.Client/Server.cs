@@ -41,7 +41,7 @@ namespace CalDav.Client {
                         )
                 ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "0" } });
             
-            var xdoc = XDocument.Parse(result.Item2);
+            var xdoc = XDocument.Parse(result.ResponseContent);
             Uri userprincipal = Url;
             foreach(XNode node in xdoc.Descendants(xcollectionset))
             {
@@ -64,7 +64,7 @@ namespace CalDav.Client {
                         )
                 ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "0" } });
             
-            xdoc = XDocument.Parse(result.Item2);
+            xdoc = XDocument.Parse(result.ResponseContent);
             var hrefs = xdoc.Descendants(xcollectionset).SelectMany(x => x.Descendants(CalDav.Common.xDav.GetName("href")));
             Url = new Uri(Url, hrefs.First().Value);
         }
@@ -95,21 +95,21 @@ namespace CalDav.Client {
 
         private HashSet<string> GetOptions() {
 			var result = Common.Request(Url, "options", credentials: Credentials);
-			if (result.Item3.ContainsKey("WWW-Authenticate"))
+			if (result.ResponseHeaders.ContainsKey("WWW-Authenticate"))
 				throw new Exception("Authentication is required");
-            if (!result.Item3.ContainsKey("DAV"))
+            if (!result.ResponseHeaders.ContainsKey("DAV"))
                 throw new Exception("This does not appear to be a valid CalDav server");
-            var dav = result.Item3["DAV"];
+            var dav = result.ResponseHeaders["DAV"];
 			if (!dav.Contains("calendar-access"))
 				throw new Exception("This does not appear to be a valid CalDav server");
-			return new HashSet<string>((result.Item3["Allow"] ?? string.Empty).ToUpper().Split(',').Select(x => x.Trim()).Distinct(), StringComparer.OrdinalIgnoreCase);
+			return new HashSet<string>((result.ResponseHeaders["Allow"] ?? string.Empty).ToUpper().Split(',').Select(x => x.Trim()).Distinct(), StringComparer.OrdinalIgnoreCase);
 		}
 
 		public void CreateCalendar(string name) {
 			if (!Options.Contains("MKCALENDAR"))
 				throw new Exception("This server does not support creating calendars");
 			var result = Common.Request(new Uri(Url, name), "mkcalendar", credentials: Credentials);
-			if (result.Item1 != System.Net.HttpStatusCode.Created)
+			if (result.HttpStatusCode != System.Net.HttpStatusCode.Created)
 				throw new Exception("Unable to create calendar");
 		}
 
@@ -124,12 +124,12 @@ namespace CalDav.Client {
                         )
                 ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "1" } });
             
-            if (string.IsNullOrEmpty(result.Item2))
+            if (string.IsNullOrEmpty(result.ResponseContent))
 				return new[]{
 					 new Calendar(Common) { Url =  Url, Credentials = Credentials }
 				};
 
-			var xdoc = XDocument.Parse(result.Item2);
+			var xdoc = XDocument.Parse(result.ResponseContent);
             var responses = xdoc.Descendants(CalDav.Common.xDav.GetName("response"));
             List<Calendar> calendars = new List<Calendar>();
             // var hrefs = xdoc.Descendants(CalDav.Common.xDav.GetName("href"));
