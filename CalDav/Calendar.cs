@@ -11,7 +11,7 @@ namespace CalDav {
 			ToDos = new List<ToDo>();
 			JournalEntries = new List<JournalEntry>();
 			FreeBusy = new List<FreeBusy>();
-			Properties = new List<Tuple<string, string, XNameValueCollection>>();
+			Properties = new List<NameValuePairWithParameters>();
 		}
 
 		public virtual string Version { get; set; }
@@ -21,7 +21,7 @@ namespace CalDav {
 		public virtual ICollection<TimeZone> TimeZones { get; set; }
 		public virtual ICollection<JournalEntry> JournalEntries { get; set; }
 		public virtual ICollection<FreeBusy> FreeBusy { get; set; }
-		public ICollection<Tuple<string, string, XNameValueCollection>> Properties { get; set; }
+		public ICollection<NameValuePairWithParameters> Properties { get; set; }
 
 		public virtual IQueryable<ICalendarObject> Items {
 			get {
@@ -90,7 +90,7 @@ namespace CalDav {
 							return;
 						break;
 					default:
-						Properties.Add(Tuple.Create(name, value, parameters));
+						Properties.Add(new NameValuePairWithParameters(name, value, parameters));
 						break;
 				}
 			}
@@ -104,7 +104,7 @@ namespace CalDav {
 
 			if (Properties != null)
 				foreach (var prop in Properties)
-					wrtr.Property(prop.Item1, prop.Item2, parameters: prop.Item3);
+					wrtr.Property(prop.Name, prop.Value, parameters: prop.Parameters);
 
 			foreach (var tz in TimeZones) {
 				tz.Calendar = this;

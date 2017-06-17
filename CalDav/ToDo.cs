@@ -7,7 +7,7 @@ namespace CalDav {
 	public class ToDo : ICalendarObject,  IToDo{
 		public ToDo() {
 			Categories = new List<string>();
-			Properties = new List<Tuple<string, string, XNameValueCollection>>();
+			Properties = new List<NameValuePairWithParameters>();
 		}
 
 		public virtual string UID { get; set; }
@@ -23,7 +23,7 @@ namespace CalDav {
 		public virtual int? Sequence { get; set; }
 		public virtual DateTime? LastModified { get; set; }
 		public virtual DateTime? Completed { get; set; }
-		public ICollection<Tuple<string, string, XNameValueCollection>> Properties { get; set; }
+		public ICollection<NameValuePairWithParameters> Properties { get; set; }
 
 		public void Deserialize(System.IO.TextReader rdr, Serializer serializer) {
 			string name, value;
@@ -44,7 +44,7 @@ namespace CalDav {
 					case "SEQUENCE": Sequence = value.ToInt(); break;
 					case "END": return;
 					default:
-						Properties.Add(Tuple.Create(name, value, parameters));
+						Properties.Add(new NameValuePairWithParameters(name, value, parameters));
 						break;
 				}
 			}
@@ -66,7 +66,7 @@ namespace CalDav {
 
 			if (Properties != null)
 				foreach (var prop in Properties)
-					wrtr.Property(prop.Item1, prop.Item2, parameters: prop.Item3);
+					wrtr.Property(prop.Name, prop.Value, parameters: prop.Parameters);
 
 			wrtr.EndBlock("VTODO");
 		}

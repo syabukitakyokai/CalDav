@@ -12,7 +12,7 @@ namespace CalDav {
 			Alarms = new List<IAlarm>();
 			Categories = new List<string>();
 			Recurrences = new List<Recurrence>();
-			Properties = new List<Tuple<string, string, XNameValueCollection>>();
+			Properties = new List<NameValuePairWithParameters>();
 			Attachments = new List<Uri>();
 		}
 
@@ -39,7 +39,7 @@ namespace CalDav {
 		public virtual Contact Organizer { get; set; }
 		public virtual ICollection<Recurrence> Recurrences { get; set; }
 
-		public ICollection<Tuple<string, string, XNameValueCollection>> Properties { get; set; }
+		public ICollection<NameValuePairWithParameters> Properties { get; set; }
 
         ICollection<IAlarm> IEvent.Alarms
         {
@@ -116,7 +116,7 @@ namespace CalDav {
 						break;
 					case "END": return;
 					default:
-						Properties.Add(Tuple.Create(name, value, parameters));
+						Properties.Add(new NameValuePairWithParameters(name, value, parameters));
 						break;
 				}
 			}
@@ -153,7 +153,7 @@ namespace CalDav {
 
 			if (Properties != null)
 				foreach (var prop in Properties)
-					wrtr.Property(prop.Item1, prop.Item2, parameters: prop.Item3);
+					wrtr.Property(prop.Name, prop.Value, parameters: prop.Parameters);
 
 			if (Alarms != null)
 				foreach (var alarm in Alarms)

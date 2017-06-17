@@ -12,26 +12,26 @@ namespace Tests {
 		[TestMethod]
 		public void KeyValue() {
 			var values = DeserializeProperty("TEST;VALUE1=ONE;VALUE2=TWO:tested\n\t tested");
-			values.Item1.ShouldBe("TEST");
-			values.Item2.ShouldBe("tested tested");
-			values.Item3["VALUE1"].ShouldBe("ONE");
-			values.Item3["VALUE2"].ShouldBe("TWO");
+			values.Name.ShouldBe("TEST");
+			values.Value.ShouldBe("tested tested");
+			values.Parameters["VALUE1"].ShouldBe("ONE");
+			values.Parameters["VALUE2"].ShouldBe("TWO");
 		}
 
-		private static Tuple<string, string, XNameValueCollection> DeserializeProperty(string text) {
+		private static NameValuePairWithParameters DeserializeProperty(string text) {
 			using (var rdr = new System.IO.StringReader(text)) {
 				string name, value;
 				var parameters = new XNameValueCollection();
 				rdr.Property(out name, out value, parameters);
 				if (name == null) return null;
-				return Tuple.Create(name, value, parameters);
+				return new NameValuePairWithParameters(name, value, parameters);
 			}
 		}
 
 		private static T Deserialize<T>(string property) where T : class, IHasParameters, new() {
 			var t = new T();
 			var values = DeserializeProperty(property);
-			t.Deserialize(values.Item2, values.Item3);
+			t.Deserialize(values.Value, values.Parameters);
 			return t;
 		}
 

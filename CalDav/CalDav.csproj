@@ -51,6 +51,7 @@
     <Compile Include="IHasParameters.cs" />
     <Compile Include="ISerializeToICAL.cs" />
     <Compile Include="JournalEntry.cs" />
+    <Compile Include="NameValuePairWithParameters.cs" />
     <Compile Include="XMailAddress.cs" />
     <Compile Include="XNameValueCollection.cs" />
     <Compile Include="XSqlDateTime.cs" />
