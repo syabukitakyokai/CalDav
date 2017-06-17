@@ -95,9 +95,9 @@ namespace CalDav.Client {
 
         private HashSet<string> GetOptions() {
 			var result = Common.Request(Url, "options", credentials: Credentials);
-			if (result.ResponseHeaders.ContainsKey("WWW-Authenticate"))
+			if (result.ResponseHeaders["WWW-Authenticate"] != null)
 				throw new Exception("Authentication is required");
-            if (!result.ResponseHeaders.ContainsKey("DAV"))
+            if (result.ResponseHeaders["DAV"] == null)
                 throw new Exception("This does not appear to be a valid CalDav server");
             var dav = result.ResponseHeaders["DAV"];
 			if (!dav.Contains("calendar-access"))

@@ -1,5 +1,6 @@
-- Lijst functie ombouwen
+
+* Lijst functie ombouwen
 - CreateRequest op IConnection definieren
 - Testen ophalen
-- Tuples namen geven
+* Tuples namen geven
 - Updates ophalen maken

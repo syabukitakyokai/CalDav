@@ -68,12 +68,12 @@ namespace CalDav.Client
                 foreach(var h in response.Headers)
                 {
                     var val = String.Join(",", h.Value.ToArray());
-                    responseHeaders.Add(h.Key, val);
+                    responseHeaders[h.Key] = val;
                 }
                 foreach (var h in response.Content.Headers)
                 {
                     var val = String.Join(",", h.Value.ToArray());
-                    responseHeaders.Add(h.Key, val);
+                    responseHeaders[h.Key] = val;
                 }
 
 
