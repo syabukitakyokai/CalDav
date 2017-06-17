@@ -11,10 +11,10 @@ namespace CalDav {
 		public string[] ByDay { get; set; }
 		public int? ByMonthDay { get; set; }
 
-		public System.Collections.Specialized.XNameValueCollection GetParameters() { return null; }
+		public XNameValueCollection GetParameters() { return null; }
 
 		public override string ToString() {
-			var parameters = new System.Collections.Specialized.XNameValueCollection();
+			var parameters = new XNameValueCollection();
 			if (Count != null) parameters["COUNT"] = Count.ToString();
 			if (Interval != null) parameters["INTERVAL"] = Interval.ToString();
 			if (Frequency != null) parameters["FREQ"] = Frequency.Value.ToString().ToUpper();
@@ -26,7 +26,7 @@ namespace CalDav {
 			return Common.FormatParameters(parameters).TrimStart(';');
 		}
 
-		public void Deserialize(string value, System.Collections.Specialized.XNameValueCollection parameters) {
+		public void Deserialize(string value, XNameValueCollection parameters) {
 			Count = parameters["COUNT"].ToInt();
 			Interval = parameters["INTERVAL"].ToInt();
 			Frequency = parameters["FREQ"].ToEnum<Frequencies>();

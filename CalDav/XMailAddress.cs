@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.Net.Mail
+namespace CalDav
 {
     public class XMailAddress
     {

@@ -123,8 +123,8 @@ namespace CalDav {
 		}
 		internal static void Property(this System.IO.TextWriter wrtr, string name, DateTime? value) {
 			if (value == null
-				|| value < System.Data.SqlTypes.SqlDateTime.MinValue.Value
-				|| value > System.Data.SqlTypes.SqlDateTime.MaxValue.Value) return;
+				|| value < XSqlDateTime.MinValue.Value
+				|| value > XSqlDateTime.MaxValue.Value) return;
 			wrtr.Property(name, FormatDate(value.Value));
 		}
 

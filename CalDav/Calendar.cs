@@ -11,7 +11,7 @@ namespace CalDav {
 			ToDos = new List<ToDo>();
 			JournalEntries = new List<JournalEntry>();
 			FreeBusy = new List<FreeBusy>();
-			Properties = new List<Tuple<string, string, System.Collections.Specialized.XNameValueCollection>>();
+			Properties = new List<Tuple<string, string, XNameValueCollection>>();
 		}
 
 		public virtual string Version { get; set; }
@@ -21,7 +21,7 @@ namespace CalDav {
 		public virtual ICollection<TimeZone> TimeZones { get; set; }
 		public virtual ICollection<JournalEntry> JournalEntries { get; set; }
 		public virtual ICollection<FreeBusy> FreeBusy { get; set; }
-		public ICollection<Tuple<string, string, System.Collections.Specialized.XNameValueCollection>> Properties { get; set; }
+		public ICollection<Tuple<string, string, XNameValueCollection>> Properties { get; set; }
 
 		public virtual IQueryable<ICalendarObject> Items {
 			get {
@@ -45,7 +45,7 @@ namespace CalDav {
 		public virtual void Deserialize(System.IO.TextReader rdr, Serializer serializer = null) {
 			if (serializer == null) serializer = new Serializer();
 			string name, value;
-			var parameters = new System.Collections.Specialized.XNameValueCollection();
+			var parameters = new XNameValueCollection();
 			while (rdr.Property(out name, out value, parameters) && !string.IsNullOrEmpty(name)) {
 				switch (name.ToUpper()) {
 					case "BEGIN":

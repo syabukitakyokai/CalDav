@@ -44,7 +44,7 @@ namespace CalDav {
 			return null;
 		}
 
-		public void Deserialize(string value, System.Collections.Specialized.XNameValueCollection parameters) {
+		public void Deserialize(string value, XNameValueCollection parameters) {
 			if (string.Equals(parameters["VALUE"], "DATE-TIME", StringComparison.OrdinalIgnoreCase)) {
 				DateTime = value.ToDateTime();
 			} else {

@@ -7,7 +7,7 @@ namespace CalDav {
 	public class JournalEntry : ICalendarObject {
 		public JournalEntry() {
 			DTSTAMP = DateTime.UtcNow;
-			Properties = new List<Tuple<string, string, System.Collections.Specialized.XNameValueCollection>>();
+			Properties = new List<Tuple<string, string, XNameValueCollection>>();
 		}
 		DateTime? DTSTAMP;
 
@@ -20,11 +20,11 @@ namespace CalDav {
 		public virtual int? Sequence { get; set; }
 		public virtual DateTime? LastModified { get; set; }
 		public virtual Calendar Calendar { get; set; }
-		public ICollection<Tuple<string, string, System.Collections.Specialized.XNameValueCollection>> Properties { get; set; }
+		public ICollection<Tuple<string, string, XNameValueCollection>> Properties { get; set; }
 
 		public void Deserialize(System.IO.TextReader rdr, Serializer serializer) {
 			string name, value;
-			var parameters = new System.Collections.Specialized.XNameValueCollection();
+			var parameters = new XNameValueCollection();
 			while (rdr.Property(out name, out value, parameters) && !string.IsNullOrEmpty(name)) {
 				switch (name.ToUpper()) {
 					case "CLASS": Class = value.ToEnum<Classes>(); break;

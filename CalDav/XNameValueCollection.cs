@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.Collections.Specialized
+namespace CalDav
 {
     public class XNameValueCollection //: Dictionary<string, string>
     {

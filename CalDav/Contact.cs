@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using System.Net.Mail;
 
 namespace CalDav {
 	public class Contact : IHasParameters {
@@ -30,7 +29,7 @@ namespace CalDav {
 			return "MAILTO:" + Email;
 		}
 
-		public void Deserialize(string value, System.Collections.Specialized.XNameValueCollection parameters) {
+		public void Deserialize(string value, XNameValueCollection parameters) {
 			Email = value.Substring(value.IndexOf(':') + 1);
 			Name = parameters["CN"];
 			SentBy = parameters["SENT-BY"];

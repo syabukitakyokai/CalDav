@@ -15,7 +15,7 @@ namespace CalCli.Util
     {
         private static IConnection refreshGoogleToken()
         {
-            IConnection connection;
+            // IConnection connection;
             //GoogleOAuthForm form = new GoogleOAuthForm();
             //form.ShowDialog();
             //connection = new GoogleConnection(form.Result.Token);
