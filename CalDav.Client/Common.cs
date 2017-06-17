@@ -13,10 +13,10 @@ namespace CalDav.Client {
             this.connection = connection;
         }
 
-        public Tuple<System.Net.HttpStatusCode, string, Dictionary<string,string>> Request(Uri url, string method, XDocument content, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
+        public Tuple<System.Net.HttpStatusCode, string, ResponseHeaders> Request(Uri url, string method, XDocument content, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
 			return Request(url, method, content.Root, credentials, headers);
 		}
-		public Tuple<System.Net.HttpStatusCode, string, Dictionary<string, string>> Request(Uri url, string method, XElement content, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
+		public Tuple<System.Net.HttpStatusCode, string, ResponseHeaders> Request(Uri url, string method, XElement content, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
 
             return Request(url, method, "text/xml", content.ToString(), credentials, headers);
 			//return Request(url, method, (req, str) => {
@@ -35,7 +35,7 @@ namespace CalDav.Client {
 //			}, credentials, headers);
 //		}
 
-		public Tuple<System.Net.HttpStatusCode, string, Dictionary<string, string>> Request(Uri url, string method = "GET", string contentType = null, string requestContent = null, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
+		public Tuple<System.Net.HttpStatusCode, string, ResponseHeaders> Request(Uri url, string method = "GET", string contentType = null, string requestContent = null, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
             var req = new XHttpWebRequest();
             req.Credentials = credentials;
             connection.Authorize(req);

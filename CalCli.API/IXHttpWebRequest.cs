@@ -13,7 +13,7 @@ namespace CalCli.API
 
         string UserAgent { get; set; }
 
-        Dictionary<string, string> RequestHeaders { get; }
+        RequestHeaders RequestHeaders { get; }
 
         NetworkCredential Credentials { get; set; }
 

@@ -13,11 +13,11 @@ namespace CalDav.Client
     {
         public string Authorization { get; set; }
         public string UserAgent { get; set; }
-        public Dictionary<string, string> RequestHeaders { get; } = new Dictionary<string, string>();
+        public RequestHeaders RequestHeaders { get; } = new RequestHeaders();
 
         public NetworkCredential Credentials { get; set; }
 
-        public Tuple<System.Net.HttpStatusCode, string, Dictionary<string,string>> Request(Uri url, string method, string contentType, string requestContent)
+        public Tuple<System.Net.HttpStatusCode, string, ResponseHeaders> Request(Uri url, string method, string contentType, string requestContent)
         {
             var httpClientHandler = new HttpClientHandler()
             {
@@ -64,7 +64,7 @@ namespace CalDav.Client
                 var response = httpClient.SendAsync(httpRequest).GetAwaiter().GetResult();
                 var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                var responseHeaders = new Dictionary<string, string>();
+                var responseHeaders = new ResponseHeaders();
                 foreach(var h in response.Headers)
                 {
                     var val = String.Join(",", h.Value.ToArray());
@@ -77,7 +77,7 @@ namespace CalDav.Client
                 }
 
 
-                var result = new Tuple<HttpStatusCode, string, Dictionary<string,string>>(
+                var result = new Tuple<HttpStatusCode, string, ResponseHeaders>(
                     response.StatusCode,
                     responseContent,
                     responseHeaders
