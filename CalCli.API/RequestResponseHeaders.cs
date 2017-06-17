@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalCli.API
 {
-    public class RequestHeaders : Dictionary<string, string>
+    public class RequestResponseHeaders : Dictionary<string, string>
     {
     }
 }

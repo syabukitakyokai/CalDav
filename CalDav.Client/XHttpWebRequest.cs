@@ -13,7 +13,7 @@ namespace CalDav.Client
     {
         public string Authorization { get; set; }
         public string UserAgent { get; set; }
-        public RequestHeaders RequestHeaders { get; } = new RequestHeaders();
+        public RequestResponseHeaders RequestHeaders { get; } = new RequestResponseHeaders();
 
         public NetworkCredential Credentials { get; set; }
 
@@ -64,7 +64,7 @@ namespace CalDav.Client
                 var response = httpClient.SendAsync(httpRequest).GetAwaiter().GetResult();
                 var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                var responseHeaders = new ResponseHeaders();
+                var responseHeaders = new RequestResponseHeaders();
                 foreach(var h in response.Headers)
                 {
                     var val = String.Join(",", h.Value.ToArray());

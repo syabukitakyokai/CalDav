@@ -9,7 +9,7 @@ namespace CalDav.Client
 {
     public class XHttpWebResponse
     {
-        public XHttpWebResponse(System.Net.HttpStatusCode httpStatusCode, string responseContent, ResponseHeaders responseHeaders)
+        public XHttpWebResponse(System.Net.HttpStatusCode httpStatusCode, string responseContent, RequestResponseHeaders responseHeaders)
         {
             HttpStatusCode = httpStatusCode;
             ResponseContent = responseContent;
@@ -18,6 +18,6 @@ namespace CalDav.Client
 
         public System.Net.HttpStatusCode HttpStatusCode;
         public string ResponseContent;
-        public ResponseHeaders ResponseHeaders;
+        public RequestResponseHeaders ResponseHeaders;
     }
 }
