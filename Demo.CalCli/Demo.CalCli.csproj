@@ -105,10 +105,6 @@
       <Project>{01a4c4cf-5ad1-4324-a391-dc922c84be1c}</Project>
       <Name>CalDav</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OutlookClient\OutlookClient.csproj">
-      <Project>{01af789a-f9ce-47f7-a66c-d3bae82aecc3}</Project>
-      <Name>OutlookClient</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

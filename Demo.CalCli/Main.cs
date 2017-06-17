@@ -45,11 +45,6 @@ namespace Demo.CalCli
                 }
                 server = null;
             }
-            else if (urlCombo.Text.Contains("Outlook"))
-            {
-                connection = new BasicConnection(null, null);
-                server = new OutlookClient.OutlookServer();
-            }
             else
             {
                 connection = new BasicConnection(usernameTextBox.Text, passwordTextBox.Text);
@@ -75,7 +70,7 @@ namespace Demo.CalCli
 
             try {
                 calendars = server.GetCalendars();
-            }catch(NullReferenceException ex)
+            }catch(NullReferenceException)
             {
                 MessageBox.Show("Could not login.");
                 return;
@@ -160,7 +155,7 @@ namespace Demo.CalCli
                 calendars[comboBox1.SelectedIndex].Save(todo);
                 todos.Add(todo);
                 checkList.Items.Add(todo.Summary);
-            }catch(Exception ex)
+            }catch(Exception)
             {
                 MessageBox.Show("Calendar doesn't support todos.");
             }
@@ -205,7 +200,7 @@ namespace Demo.CalCli
             {
                 calendars = server.GetCalendars();
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 MessageBox.Show("Could not login.");
                 return;
