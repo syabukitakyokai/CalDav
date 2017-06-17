@@ -12,7 +12,7 @@ namespace CalDav {
 			Alarms = new List<IAlarm>();
 			Categories = new List<string>();
 			Recurrences = new List<Recurrence>();
-			Properties = new List<Tuple<string, string, System.Collections.Specialized.NameValueCollection>>();
+			Properties = new List<Tuple<string, string, System.Collections.Specialized.XNameValueCollection>>();
 			Attachments = new List<Uri>();
 		}
 
@@ -39,7 +39,7 @@ namespace CalDav {
 		public virtual Contact Organizer { get; set; }
 		public virtual ICollection<Recurrence> Recurrences { get; set; }
 
-		public ICollection<Tuple<string, string, System.Collections.Specialized.NameValueCollection>> Properties { get; set; }
+		public ICollection<Tuple<string, string, System.Collections.Specialized.XNameValueCollection>> Properties { get; set; }
 
         ICollection<IAlarm> IEvent.Alarms
         {
@@ -65,7 +65,7 @@ namespace CalDav {
 
         public void Deserialize(System.IO.TextReader rdr, Serializer serializer) {
 			string name, value;
-			var parameters = new System.Collections.Specialized.NameValueCollection();
+			var parameters = new System.Collections.Specialized.XNameValueCollection();
 			while (rdr.Property(out name, out value, parameters) && !string.IsNullOrEmpty(name)) {
 				switch (name.ToUpper()) {
 					case "BEGIN":

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace System.Net.Mail
 {
-    public class MailAddress
+    public class XMailAddress
     {
         public string Address { get; private set; }
         public string DisplayName { get; private set; }
 
-        public MailAddress(string address, string displayName)
+        public XMailAddress(string address, string displayName)
         {
             Address = address;
             DisplayName = displayName;

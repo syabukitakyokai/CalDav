@@ -4,7 +4,7 @@ using System.Net.Mail;
 namespace CalDav {
 	public class Contact : IHasParameters {
 		public Contact() { }
-		public Contact(MailAddress addr) {
+		public Contact(XMailAddress addr) {
 			Name = addr.DisplayName;
 			Email = addr.Address;
 		}
@@ -14,12 +14,12 @@ namespace CalDav {
 		public string SentBy { get; set; }
 		public string Directory { get; set; }
 
-		public static implicit operator MailAddress(Contact c) {
-			return new MailAddress(c.Email, c.Name);
+		public static implicit operator XMailAddress(Contact c) {
+			return new XMailAddress(c.Email, c.Name);
 		}
 
-		public NameValueCollection GetParameters() {
-			var values = new NameValueCollection();
+		public XNameValueCollection GetParameters() {
+			var values = new XNameValueCollection();
 			if (!string.IsNullOrEmpty(Name)) values["CN"] = Name;
 			if (!string.IsNullOrEmpty(Directory)) values["DIR"] = Directory;
 			if (!string.IsNullOrEmpty(SentBy)) values["SENT-BY"] = SentBy;
@@ -30,7 +30,7 @@ namespace CalDav {
 			return "MAILTO:" + Email;
 		}
 
-		public void Deserialize(string value, System.Collections.Specialized.NameValueCollection parameters) {
+		public void Deserialize(string value, System.Collections.Specialized.XNameValueCollection parameters) {
 			Email = value.Substring(value.IndexOf(':') + 1);
 			Name = parameters["CN"];
 			SentBy = parameters["SENT-BY"];

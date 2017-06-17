@@ -243,6 +243,16 @@ namespace Demo.CalCli
             var q = CalendarQuery.SearchEvents(new DateTime(2000,1,1), new DateTime(2099,1,1));
             var result = calendar.Search(q);
 
+            var msg = "";
+            foreach (var cal in result)
+            {
+                foreach (var evt in cal.Events)
+                {
+                    msg = msg + evt.Summary + Environment.NewLine;
+                }
+            }
+
+            MessageBox.Show(msg);
         }
     }
 }

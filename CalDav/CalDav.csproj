@@ -51,8 +51,8 @@
     <Compile Include="IHasParameters.cs" />
     <Compile Include="ISerializeToICAL.cs" />
     <Compile Include="JournalEntry.cs" />
-    <Compile Include="Portable\MailAddress.cs" />
-    <Compile Include="Portable\NameValueCollection.cs" />
+    <Compile Include="Portable\XMailAddress.cs" />
+    <Compile Include="Portable\XNameValueCollection.cs" />
     <Compile Include="Portable\SqlDateTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recurrence.cs" />

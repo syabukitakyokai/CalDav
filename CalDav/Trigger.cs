@@ -11,8 +11,8 @@ namespace CalDav {
 		public TimeSpan? Duration { get; set; }
 		public DateTime? DateTime { get; set; }
 
-		public NameValueCollection GetParameters() {
-			var values = new NameValueCollection();
+		public XNameValueCollection GetParameters() {
+			var values = new XNameValueCollection();
 			if (DateTime != null) values["VALUE"] = "DATE-TIME";
 			if (DateTime == null && Related != Relateds.Start)
 				values["RELATED"] = Related.ToString().ToUpper();
@@ -44,7 +44,7 @@ namespace CalDav {
 			return null;
 		}
 
-		public void Deserialize(string value, System.Collections.Specialized.NameValueCollection parameters) {
+		public void Deserialize(string value, System.Collections.Specialized.XNameValueCollection parameters) {
 			if (string.Equals(parameters["VALUE"], "DATE-TIME", StringComparison.OrdinalIgnoreCase)) {
 				DateTime = value.ToDateTime();
 			} else {

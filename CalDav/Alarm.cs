@@ -29,7 +29,7 @@ namespace CalDav {
 
         public void Deserialize(System.IO.TextReader rdr, Serializer serializer) {
 			string name, value;
-			var parameters = new System.Collections.Specialized.NameValueCollection();
+			var parameters = new System.Collections.Specialized.XNameValueCollection();
 			while (rdr.Property(out name, out value, parameters) && !string.IsNullOrEmpty(name)) {
 				switch (name) {
 					case "ACTION": Action = getAlarmActions(value); break;
@@ -49,6 +49,8 @@ namespace CalDav {
                     return AlarmActions.AUDIO;
                 case "DISPLAY":
                     return AlarmActions.DISPLAY;
+                case "NONE":
+                    return AlarmActions.NONE;
                 default:
                     throw new Exception("Action is not valid for alarm.");
             }

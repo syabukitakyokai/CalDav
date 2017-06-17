@@ -9,6 +9,7 @@ namespace CalCli.API
     {
         AUDIO,
         DISPLAY,
-        EMAIL
+        EMAIL,
+        NONE,
     }
 }

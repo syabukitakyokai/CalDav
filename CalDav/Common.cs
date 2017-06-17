@@ -112,7 +112,7 @@ namespace CalDav {
 				.Replace("\\;", ";")
 				.Replace("\\,", ",");
 		}
-		internal static void Property(this System.IO.TextWriter wrtr, string name, string value, bool encoded = false, NameValueCollection parameters = null) {
+		internal static void Property(this System.IO.TextWriter wrtr, string name, string value, bool encoded = false, XNameValueCollection parameters = null) {
 			if (value == null) return;
 			value = name.ToUpper() + FormatParameters(parameters) + ":" + (encoded ? value : PropertyEncode(value));
 			while (value.Length > 75) {
@@ -140,7 +140,7 @@ namespace CalDav {
 				parameters: value is IHasParameters ? ((IHasParameters)value).GetParameters() : null);
 		}
 
-		internal static string FormatParameters(NameValueCollection parameters) {
+		internal static string FormatParameters(XNameValueCollection parameters) {
 			if (parameters == null || parameters.Count == 0) return string.Empty;
 
 			var sb = new StringBuilder();
@@ -165,7 +165,7 @@ namespace CalDav {
 			}
 		}
 
-		internal static bool Property(this System.IO.TextReader rdr, out string name, out string value, NameValueCollection parameters) {
+		internal static bool Property(this System.IO.TextReader rdr, out string name, out string value, XNameValueCollection parameters) {
 			var line = rdr.ReadLine();
 			var oline = line;
 			value = name = null;

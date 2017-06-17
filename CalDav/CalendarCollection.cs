@@ -6,7 +6,7 @@ namespace CalDav {
 		public CalendarCollection(IEnumerable<Calendar> calendars) : base(calendars) { }
 		public void Deserialize(System.IO.TextReader rdr, Serializer serializer) {
 			string name, value;
-			var parameters = new System.Collections.Specialized.NameValueCollection();
+			var parameters = new System.Collections.Specialized.XNameValueCollection();
 			while (rdr.Property(out name, out value, parameters) && !string.IsNullOrEmpty(name)) {
 				switch (name.ToUpper()) {
 					case "BEGIN":

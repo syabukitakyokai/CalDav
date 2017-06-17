@@ -2,7 +2,7 @@
 
 namespace CalDav {
 	public interface IHasParameters {
-		NameValueCollection GetParameters();
-		void Deserialize(string value, NameValueCollection parameters);
+		XNameValueCollection GetParameters();
+		void Deserialize(string value, XNameValueCollection parameters);
 	}
 }

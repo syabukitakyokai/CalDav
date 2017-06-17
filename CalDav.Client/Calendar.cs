@@ -81,7 +81,7 @@ namespace CalDav.Client {
             {
                 Common.Serialize(ms, calendar);
                 var arr = ms.ToArray();
-                content = System.Text.Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
+                content = System.Text.Encoding.UTF8.GetString(arr, 0, arr.Length);
             }
 
 
@@ -139,7 +139,7 @@ namespace CalDav.Client {
             {
                 Common.Serialize(ms, calendar);
                 var arr = ms.ToArray();
-                content = System.Text.Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
+                content = System.Text.Encoding.UTF8.GetString(arr, 0, arr.Length);
             }
 
             var result = common.Request(new Uri(Url, e.UID + ".ics"), "PUT", "text/calendar", content, Credentials, headers);
@@ -201,7 +201,7 @@ namespace CalDav.Client {
 
         public IToDo createToDo()
         {
-            CalDav.ToDo todo = new CalDav.ToDo();
+            ToDo todo = new ToDo();
             return todo;
         }
 
@@ -217,7 +217,7 @@ namespace CalDav.Client {
 
         public IEvent createEvent()
         {
-            return new CalDav.Event();
+            return new Event();
         }
     }
 }

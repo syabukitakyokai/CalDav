@@ -18,10 +18,10 @@ namespace Tests {
 			values.Item3["VALUE2"].ShouldBe("TWO");
 		}
 
-		private static Tuple<string, string, NameValueCollection> DeserializeProperty(string text) {
+		private static Tuple<string, string, XNameValueCollection> DeserializeProperty(string text) {
 			using (var rdr = new System.IO.StringReader(text)) {
 				string name, value;
-				var parameters = new System.Collections.Specialized.NameValueCollection();
+				var parameters = new XNameValueCollection();
 				rdr.Property(out name, out value, parameters);
 				if (name == null) return null;
 				return Tuple.Create(name, value, parameters);
@@ -42,7 +42,7 @@ namespace Tests {
 
 			contact.Name.ShouldBe("JohnSmith");
 			contact.Email.ShouldBe("jsmith@host1.com");
-			var addr = (MailAddress)contact;
+			var addr = (XMailAddress)contact;
 			addr.DisplayName.ShouldBe("JohnSmith");
 			addr.Address.ShouldBe("jsmith@host1.com");
 
