@@ -1,6 +1,16 @@
+Heel handing: 
+- http://sabre.io/dav/building-a-caldav-client/
+
 
 * Lijst functie ombouwen
 - CreateRequest op IConnection definieren
 - Testen ophalen
 * Tuples namen geven
 - Updates ophalen maken
+
+
+
+- Functies
+  - Multiple gets bundled op etag
+  - Checken wijzigingen in ctag
+  - Sync op basis van ctag

@@ -13,6 +13,7 @@ namespace CalDav {
 		public static readonly XNamespace xCalDav = XNamespace.Get("urn:ietf:params:xml:ns:caldav");
 		public static readonly XNamespace xApple = XNamespace.Get("http://apple.com/ns/ical/");
 		public static readonly XNamespace xCardDav = XNamespace.Get("urn:ietf:params:xml:ns:carddav");
+        public static readonly XNamespace xCalendarServer = XNamespace.Get("http://calendarserver.org/ns/");
 
 		internal static void BeginBlock(this System.IO.TextWriter wrtr, string name) {
 			wrtr.WriteLine("BEGIN:" + name.ToUpper());

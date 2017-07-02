@@ -117,10 +117,15 @@ namespace CalDav.Client {
             var xcollectionset = CalDav.Common.xCalDav.GetName("calendar-home-set");
             var result = Common.Request(Url, "propfind", new XDocument(
                     new XElement(CalDav.Common.xDav.GetName("propfind"),
-                        new XElement(CalDav.Common.xDav.GetName("allprop")//,
-                            //new XElement(xcollectionset)
+                        //new XElement(CalDav.Common.xDav.GetName("allprop")//,
+                        //    //new XElement(xcollectionset)
+                        //    )
+                        new XElement(CalDav.Common.xDav.GetName("prop"),
+                            new XElement(CalDav.Common.xDav.GetName("resourcetype")),
+                            //new XElement(CalDav.Common.xDav.GetName("displayname")),
+                            // new XElement(CalDav.Common.xCalendarServer.GetName("getctag")),
+                            new XElement(CalDav.Common.xCalDav.GetName("supported-calendar-component-set"))
                             )
-
                         )
                 ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "1" } });
             
@@ -133,12 +138,18 @@ namespace CalDav.Client {
             var responses = xdoc.Descendants(CalDav.Common.xDav.GetName("response"));
             List<Calendar> calendars = new List<Calendar>();
             // var hrefs = xdoc.Descendants(CalDav.Common.xDav.GetName("href"));
-            foreach(XElement response in responses)
+
+            var attributeName = XName.Get("name");
+            foreach (XElement response in responses)
             {
+                // Resourcetype calendar
                 if(response.Descendants(CalDav.Common.xCalDav.GetName("calendar")).Count() > 0)
                 {
-                    string href = response.Descendants(CalDav.Common.xDav.GetName("href")).First().Value;
-                    calendars.Add(new Calendar(Common, new Uri(Url, href), Credentials));
+                    if (response.Descendants(CalDav.Common.xCalDav.GetName("comp")).Where(d => d.Attribute(attributeName).Value == "VEVENT").Count() > 0)
+                    {
+                        string href = response.Descendants(CalDav.Common.xDav.GetName("href")).First().Value;
+                        calendars.Add(new Calendar(Common, new Uri(Url, href), Credentials));
+                    }
                 }
             }
             return calendars.ToArray();

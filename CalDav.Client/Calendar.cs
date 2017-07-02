@@ -29,8 +29,21 @@ namespace CalDav.Client {
         
 
         public void Initialize() {
-			var result = common.Request(Url, "PROPFIND", CalDav.Common.xDav.Element("propfind",
-				CalDav.Common.xDav.Element("allprop")), Credentials, new Dictionary<string, string> {
+			var result = common.Request(Url, "PROPFIND", 
+                new XDocument(
+                    new XElement(CalDav.Common.xDav.GetName("propfind"),
+                        //new XElement(CalDav.Common.xDav.GetName("allprop")//,
+                        //    //new XElement(xcollectionset)
+                        //    )
+                        new XElement(CalDav.Common.xDav.GetName("prop"),
+                            new XElement(CalDav.Common.xDav.GetName("resourcetype")),
+                            new XElement(CalDav.Common.xDav.GetName("displayname")),
+                            // new XElement(CalDav.Common.xCalendarServer.GetName("getctag")),
+                            new XElement(CalDav.Common.xCalDav.GetName("calendar-description"))
+                            )
+                        )
+                    ),
+                    Credentials, new Dictionary<string, string> {
 					{ "Depth", "0" }
 				});
 			var xdoc = XDocument.Parse(result.ResponseContent);
