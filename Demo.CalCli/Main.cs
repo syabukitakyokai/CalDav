@@ -233,19 +233,21 @@ namespace Demo.CalCli
         {
             var iCalendar = calendars[comboBox1.SelectedIndex];
             var calendar = iCalendar as CalDav.Client.Calendar;
-            var all = calendar.GetAll();
+            //var all = calendar.GetAll();
 
-            var q = CalendarQuery.SearchEvents(new DateTime(2000,1,1), new DateTime(2099,1,1));
-            var result = calendar.Search(q);
+            //var q = CalendarQuery.SearchEvents(new DateTime(2000,1,1), new DateTime(2099,1,1));
+            //var result = calendar.Search(q);
 
-            var msg = "";
-            foreach (var cal in result)
-            {
-                foreach (var evt in cal.Events)
-                {
-                    msg = msg + evt.Summary + Environment.NewLine;
-                }
-            }
+            //var msg = "";
+            //foreach (var cal in result)
+            //{
+            //    foreach (var evt in cal.Events)
+            //    {
+            //        msg = msg + evt.Summary + Environment.NewLine;
+            //    }
+            //}
+
+            var msg = calendar.GetSyncToken();
 
             MessageBox.Show(msg);
         }

@@ -74,7 +74,36 @@ namespace CalDav.Client {
 			}));
 		}
 
-		public void Save(Event e) {
+        public string GetSyncToken()
+        {
+            var requestContent = new XDocument(
+                    new XElement(CalDav.Common.xDav.GetName("propfind"),
+                        //new XElement(CalDav.Common.xDav.GetName("allprop")//,
+                        //    //new XElement(xcollectionset)
+                        //    )
+                        new XElement(CalDav.Common.xDav.GetName("prop"),
+                            new XElement(CalDav.Common.xDav.GetName("displayname")),
+                            // new XElement(CalDav.Common.xCalendarServer.GetName("getctag")),
+                            new XElement(CalDav.Common.xDav.GetName("sync-token"))
+                            )
+                        )
+                    );
+
+            var result = common.Request(Url, "PROPFIND", requestContent, Credentials, new Dictionary<string, string> {
+                { "Depth", "0" }
+            });
+
+            var xdoc = XDocument.Parse(result.ResponseContent);
+            var desc = xdoc.Descendants(CalDav.Common.xDav.GetName("sync-token")).FirstOrDefault();
+            if (desc == null)
+            {
+                throw new Exception("Server does not support sync-token");
+            }
+
+            return desc.Value;
+        }
+
+        public void Save(Event e) {
             bool update = !string.IsNullOrEmpty(e.UID);
         
             if (string.IsNullOrEmpty(e.UID)) e.UID = Guid.NewGuid().ToString();
