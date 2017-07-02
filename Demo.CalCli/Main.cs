@@ -251,7 +251,8 @@ namespace Demo.CalCli
             var syncToken = calendar.GetSyncToken();
 
 
-            var changes = calendar.GetSyncChanges(syncToken);
+            // var changes = calendar.GetSyncChanges(syncToken);
+            var changes = calendar.GetSyncChanges("BLA");
         }
     }
 }

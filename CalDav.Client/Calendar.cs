@@ -122,6 +122,11 @@ namespace CalDav.Client {
                 { "Depth", "1" }
             });
 
+
+            //
+            // TODO afvangen 403 als er iets met synctoken aan de hand is, zodat we opnieuw kunnen proberen
+            //
+
             throw new NotImplementedException("TODO UPDATED EN DELETED TERUGGEVEN");
             //var xdoc = XDocument.Parse(result.ResponseContent);
             //var desc = xdoc.Descendants(CalDav.Common.xDav.GetName("sync-token")).FirstOrDefault();

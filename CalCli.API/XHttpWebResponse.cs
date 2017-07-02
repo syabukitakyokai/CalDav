@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalDav.Client
+namespace CalCli.API
 {
     public class XHttpWebResponse
     {

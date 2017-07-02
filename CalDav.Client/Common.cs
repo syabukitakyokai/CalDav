@@ -36,7 +36,7 @@ namespace CalDav.Client {
 //		}
 
 		public XHttpWebResponse Request(Uri url, string method = "GET", string contentType = null, string requestContent = null, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
-            var req = new XHttpWebRequest();
+            var req = connection.CreateHttpWebRequest();
             req.Credentials = credentials;
             connection.Authorize(req);
 			// req.Method = method.ToUpper();

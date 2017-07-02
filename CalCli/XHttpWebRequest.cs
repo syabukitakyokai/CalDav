@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 
-namespace CalDav.Client
+namespace CalCli
 {
     public class XHttpWebRequest : IXHttpWebRequest
     {
@@ -83,7 +83,7 @@ namespace CalDav.Client
                     responseHeaders
                     );
 
-                // response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
                 return result;
             }

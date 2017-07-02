@@ -30,6 +30,11 @@ namespace CalCli
             return request;
         }
 
+        public IXHttpWebRequest CreateHttpWebRequest()
+        {
+            return new XHttpWebRequest();
+        }
+
         public NetworkCredential GetCredential(Uri uri, string authType)
         {
             return new NetworkCredential(username, password);
