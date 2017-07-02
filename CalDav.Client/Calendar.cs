@@ -103,6 +103,36 @@ namespace CalDav.Client {
             return desc.Value;
         }
 
+        public string GetSyncChanges(string syncToken)
+        {
+            var requestContent = new XDocument(
+                    new XElement(CalDav.Common.xDav.GetName("sync-collection"),
+                        new XElement(CalDav.Common.xDav.GetName("sync-token"), syncToken),
+                        new XElement(CalDav.Common.xDav.GetName("sync-level"), "1"),
+                        //new XElement(CalDav.Common.xDav.GetName("allprop")//,
+                        //    //new XElement(xcollectionset)
+                        //    )
+                        new XElement(CalDav.Common.xDav.GetName("prop"),
+                            new XElement(CalDav.Common.xDav.GetName("getetag"))
+                            )
+                        )
+                    );
+
+            var result = common.Request(Url, "REPORT", requestContent, Credentials, new Dictionary<string, string> {
+                { "Depth", "1" }
+            });
+
+            throw new NotImplementedException("TODO UPDATED EN DELETED TERUGGEVEN");
+            //var xdoc = XDocument.Parse(result.ResponseContent);
+            //var desc = xdoc.Descendants(CalDav.Common.xDav.GetName("sync-token")).FirstOrDefault();
+            //if (desc == null)
+            //{
+            //    throw new Exception("Server does not support sync-token");
+            //}
+
+            //return desc.Value;
+        }
+
         public void Save(Event e) {
             bool update = !string.IsNullOrEmpty(e.UID);
         

@@ -246,10 +246,12 @@ namespace Demo.CalCli
             //        msg = msg + evt.Summary + Environment.NewLine;
             //    }
             //}
+            // MessageBox.Show(msg);
 
-            var msg = calendar.GetSyncToken();
+            var syncToken = calendar.GetSyncToken();
 
-            MessageBox.Show(msg);
+
+            var changes = calendar.GetSyncChanges(syncToken);
         }
     }
 }
