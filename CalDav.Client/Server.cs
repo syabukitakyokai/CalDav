@@ -105,11 +105,57 @@ namespace CalDav.Client {
 			return new HashSet<string>((result.ResponseHeaders["Allow"] ?? string.Empty).ToUpper().Split(',').Select(x => x.Trim()).Distinct(), StringComparer.OrdinalIgnoreCase);
 		}
 
-		public void CreateCalendar(string name) {
-			if (!Options.Contains("MKCALENDAR"))
-				throw new Exception("This server does not support creating calendars");
-			var result = Common.Request(new Uri(Url, name), "mkcalendar", credentials: Credentials);
-			if (result.HttpStatusCode != System.Net.HttpStatusCode.Created)
+	    protected XHttpWebResponse MkCalendar(string name) {
+            return Common.Request(new Uri(Url, name), "mkcalendar", credentials: Credentials);
+        }
+
+
+        protected XHttpWebResponse MkCol(string name)
+        {
+            var resourcetype = CalDav.Common.xDav.Element("resourcetype",
+                CalDav.Common.xDav.Element("collection"),
+                    CalDav.Common.xCalDav.Element("calendar")
+            );
+
+            var comp = CalDav.Common.xCalDav.Element("comp");
+            comp.SetAttributeValue("name", "VEVENT");
+
+            var supportedComponentSet = CalDav.Common.xCalDav.Element(
+                    "supported-calendar-component-set",
+                    comp
+                );
+            var displayName = CalDav.Common.xDav.Element("displayname", name);
+
+            return Common.Request(new Uri(Url, name), "MKCOL",
+                CalDav.Common.xDav.Element("mkcol",
+                    CalDav.Common.xDav.Element("set",
+                        CalDav.Common.xDav.Element("prop",
+                            resourcetype,
+                            supportedComponentSet,
+                            displayName
+                        )
+                    )
+                ),
+                credentials: Credentials);
+
+        }
+
+        public void CreateCalendar(string name)
+		{
+		    XHttpWebResponse response = null;
+
+		    if (Options.Contains("MKCALENDAR"))
+            {
+                response = MkCalendar(name);
+            }
+            else if (Options.Contains("MKCOL"))
+		    {
+		        response = MkCol(name);
+		    }
+            else
+                throw new Exception("This server does not support creating calendars");
+
+			if (response.HttpStatusCode != System.Net.HttpStatusCode.Created)
 				throw new Exception("Unable to create calendar");
 		}
 
