@@ -74,6 +74,20 @@ namespace CalDav.Client {
 			}));
 		}
 
+        public ICollection<Event> GetEvents(DateTime? from = null, DateTime? to = null)
+        {
+            var result = new List<Event>();
+            var q = CalendarQuery.SearchEvents(from, to);
+            var callendars = this.Search(q);
+
+            foreach (var cal in callendars)
+            {
+                result.AddRange(cal.Events);
+            }
+
+            return result;
+        }
+
         public string GetSyncToken()
         {
             var requestContent = new XDocument(

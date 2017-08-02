@@ -112,6 +112,8 @@ namespace CalDav.Client {
 
         protected XHttpWebResponse MkCol(string name)
         {
+            var id = name.Replace(" ", string.Empty);
+
             var resourcetype = CalDav.Common.xDav.Element("resourcetype",
                 CalDav.Common.xDav.Element("collection"),
                     CalDav.Common.xCalDav.Element("calendar")
@@ -126,7 +128,7 @@ namespace CalDav.Client {
                 );
             var displayName = CalDav.Common.xDav.Element("displayname", name);
 
-            return Common.Request(new Uri(Url, name), "MKCOL",
+            return Common.Request(new Uri(Url, id), "MKCOL",
                 CalDav.Common.xDav.Element("mkcol",
                     CalDav.Common.xDav.Element("set",
                         CalDav.Common.xDav.Element("prop",
@@ -159,7 +161,38 @@ namespace CalDav.Client {
 				throw new Exception("Unable to create calendar");
 		}
 
-		public Calendar[] GetCalendars() {
+        public Calendar GetCalendar(string name)
+        {
+            var id = name.Replace(" ", string.Empty);
+            var xcollectionset = CalDav.Common.xCalDav.GetName("calendar-home-set");
+            var result = Common.Request(new Uri(Url, id), "propfind", new XDocument(
+                    new XElement(CalDav.Common.xDav.GetName("propfind"),
+                        new XElement(CalDav.Common.xDav.GetName("allprop")//,
+                            )
+
+                        )
+                ), Credentials, new System.Collections.Generic.Dictionary<string, string> { { "Depth", "1" } });
+
+            if (string.IsNullOrEmpty(result.ResponseContent))
+                return null;
+
+            var xdoc = XDocument.Parse(result.ResponseContent);
+            var responses = xdoc.Descendants(CalDav.Common.xDav.GetName("response"));
+            List<Calendar> calendars = new List<Calendar>();
+
+            foreach (XElement response in responses)
+            {
+                if (response.Descendants(CalDav.Common.xCalDav.GetName("calendar")).Count() > 0)
+                {
+                    string href = response.Descendants(CalDav.Common.xDav.GetName("href")).First().Value;
+                    calendars.Add(new Calendar(Common, new Uri(Url, href), Credentials));
+                }
+            }
+            return calendars.FirstOrDefault();
+        }
+
+
+        public Calendar[] GetCalendars() {
             var xcollectionset = CalDav.Common.xCalDav.GetName("calendar-home-set");
             var result = Common.Request(Url, "propfind", new XDocument(
                     new XElement(CalDav.Common.xDav.GetName("propfind"),
