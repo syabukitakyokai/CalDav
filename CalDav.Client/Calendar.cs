@@ -250,6 +250,32 @@ namespace CalDav.Client {
 
             GetObject(e.UID);
         }
+
+        public void Delete(Event e)
+        {
+            if (string.IsNullOrEmpty(e.UID)) throw new ArgumentNullException("UID");
+
+            var headers = new Dictionary<string, string>();
+
+            var calendar = new CalDav.Calendar();
+            e.Sequence = (e.Sequence ?? 0) + 1;
+            string content;
+            using (var ms = new MemoryStream())
+            {
+                Common.Serialize(ms, calendar);
+                var arr = ms.ToArray();
+                content = System.Text.Encoding.UTF8.GetString(arr, 0, arr.Length);
+            }
+
+            var result = common.Request(new Uri(Url, e.UID + ".ics"), "DELETE", "text/calendar", content, Credentials, headers);
+            if (result.HttpStatusCode != System.Net.HttpStatusCode.Created && result.HttpStatusCode != HttpStatusCode.NoContent)
+                throw new Exception("Unable to delete event: " + result.HttpStatusCode);
+            //e.Url = new Uri(Url, result.Item3[System.Net.HttpRequestHeader.Location]);
+            e.Url = new Uri(Url, result.ResponseHeaders["Location"]);
+
+            GetObject(e.UID);
+        }
+
         public CalendarCollection GetAll() {
 			var result = common.Request(Url, "REPORT", CalDav.Common.xCalDav.Element("calendar-multiget",
 			CalDav.Common.xDav.Element("prop",
