@@ -83,8 +83,6 @@ namespace CalCli
                     responseHeaders
                     );
 
-                response.EnsureSuccessStatusCode();
-
                 return result;
             }
         }
