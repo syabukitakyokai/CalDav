@@ -173,7 +173,7 @@ namespace CalDav.Client {
                             )
 
                         )
-                ), Credentials, new Dictionary<string, string> { { "Depth", "1" } });
+                ), Credentials, new Dictionary<string, string> { { "Depth", "0" } });
 
             if (result.HttpStatusCode == HttpStatusCode.NotFound || string.IsNullOrEmpty(result.ResponseContent))
                 return null;
