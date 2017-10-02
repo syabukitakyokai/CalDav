@@ -230,26 +230,6 @@ namespace CalDav.Client {
 
         }
 
-        public void Delete(Event e)
-        {
-            if (string.IsNullOrEmpty(e.UID)) throw new ArgumentNullException("UID");
-
-            var headers = new Dictionary<string, string>();
-
-            var calendar = new CalDav.Calendar();
-            string content;
-            using (var ms = new MemoryStream())
-            {
-                Common.Serialize(ms, calendar);
-                var arr = ms.ToArray();
-                content = System.Text.Encoding.UTF8.GetString(arr, 0, arr.Length);
-            }
-
-            var result = common.Request(new Uri(Url, e.UID + ".ics"), "DELETE", "text/calendar", content, Credentials, headers);
-            if (result.HttpStatusCode != System.Net.HttpStatusCode.Created && result.HttpStatusCode != HttpStatusCode.NoContent)
-                throw new Exception("Unable to delete event: " + result.HttpStatusCode);
-        }
-
         public void Delete(string id)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("UID");
