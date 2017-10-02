@@ -17,5 +17,11 @@ namespace CalCli.Connections
             request.Authorization = "Bearer " + token;
             return request;
         }
+
+        public IXHttpWebRequest CreateHttpWebRequest()
+        {
+            return new XHttpWebRequest();
+        }
+
     }
 }

@@ -17,5 +17,6 @@ namespace CalCli.API
 
         NetworkCredential Credentials { get; set; }
 
+        XHttpWebResponse Request(Uri url, string method, string contentType, string requestContent);
     }
 }

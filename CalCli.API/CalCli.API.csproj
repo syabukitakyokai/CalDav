@@ -48,6 +48,7 @@
     <Compile Include="Relateds.cs" />
     <Compile Include="RequestResponseHeaders.cs" />
     <Compile Include="Statuses.cs" />
+    <Compile Include="XHttpWebResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

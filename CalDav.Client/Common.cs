@@ -19,24 +19,10 @@ namespace CalDav.Client {
 		public XHttpWebResponse Request(Uri url, string method, XElement content, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
 
             return Request(url, method, "text/xml", content.ToString(), credentials, headers);
-			//return Request(url, method, (req, str) => {
-				//req.ContentType = "text/xml";
-                //var xml = content.ToString();
-                //using (var wrtr = new System.IO.StreamWriter(str))
-					//wrtr.Write(xml);
-			//}, credentials, headers);
 		}
 
-//		public Tuple<System.Net.HttpStatusCode, string, System.Net.WebHeaderCollection> Request(Uri url, string method, string contentType, string content, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, object> headers = null) {
-//			return Request(url, method, (req, str) => {
-//				req.ContentType = contentType;
-//				using (var wrtr = new System.IO.StreamWriter(str))
-//					wrtr.Write(content);
-//			}, credentials, headers);
-//		}
-
 		public XHttpWebResponse Request(Uri url, string method = "GET", string contentType = null, string requestContent = null, NetworkCredential credentials = null, System.Collections.Generic.Dictionary<string, string> headers = null) {
-            var req = new XHttpWebRequest();
+            var req = connection.CreateHttpWebRequest();
             req.Credentials = credentials;
             connection.Authorize(req);
 			// req.Method = method.ToUpper();
@@ -57,29 +43,7 @@ namespace CalDav.Client {
                     }
                 }
 
-            //if (credentials != null) {
-            //	//req.Credentials = credentials;
-            //	var b64 = credentials.UserName + ":" + credentials.Password;
-            //	b64 = System.Convert.ToBase64String(System.Text.Encoding.Default.GetBytes(b64));
-            //	req.Headers[HttpRequestHeader.Authorization] = "Basic " + b64;
-            //}
             connection.Authorize(req);
-
-            //var reqAsyncResult = req.BeginGetRequestStream(null, null);
-            //using (var stream = req.EndGetRequestStream(reqAsyncResult))
-            //using (var stream = req.BeginGetRequestStream())
-            //{
-            //using (var stream = req.GetRequestStream()) {
-            //  if (content != null) {
-            //	content(req, stream);
-            //}
-
-            //using (var res = GetResponse(req))
-            //using (var str = res.GetResponseStream())
-            //using (var rdr = new System.IO.StreamReader(str)) {
-            //return Tuple.Create(res.StatusCode, rdr.ReadToEnd(), res.Headers);
-            //}
-            //}
 
             return req.Request(url, method, contentType, requestContent);
 		}

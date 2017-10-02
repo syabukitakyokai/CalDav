@@ -38,6 +38,7 @@
     <Compile Include="Connections\BasicConnection.cs" />
     <Compile Include="Connections\GoogleConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XHttpWebRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CalCli.API\CalCli.API.csproj">
