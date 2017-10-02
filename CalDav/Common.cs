@@ -29,7 +29,7 @@ namespace CalDav {
 			return string.Equals(input ?? string.Empty, other ?? string.Empty, StringComparison.OrdinalIgnoreCase);
 		}
 
-		private static Regex rxDate = new Regex(@"(\d{4})(\d{2})(\d{2})T?(\d{2}?)(\d{2}?)(\d{2}?)(Z?)", RegexOptions.IgnoreCase);
+		private static Regex rxDate = new Regex(@"(\d{4})(\d{2})(\d{2})(T?(\d{2}?)(\d{2}?)(\d{2}?)(Z?))?", RegexOptions.IgnoreCase);
 		public static DateTime? ToDateTime(this string value, Calendar calendar, string TimeZoneID) {
 			var date = ToDateTime(value);
 			if (date == null) return null;
@@ -57,9 +57,9 @@ namespace CalDav {
 					match.Groups[1].Value.ToInt() ?? 0,
 					match.Groups[2].Value.ToInt() ?? 0,
 					match.Groups[3].Value.ToInt() ?? 0,
-					match.Groups[4].Value.ToInt() ?? 0,
 					match.Groups[5].Value.ToInt() ?? 0,
 					match.Groups[6].Value.ToInt() ?? 0,
+					match.Groups[7].Value.ToInt() ?? 0,
 				 match.Groups[match.Groups.Count - 1].Value.Is("Z") ? DateTimeKind.Utc : DateTimeKind.Unspecified);
 			else if (DateTime.TryParse(value, out ret))
 				return ret;
